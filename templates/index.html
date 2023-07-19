@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Available Databases
+{% endblock %}
+{% block btns %}
+<a href="createdb" style="color: #4F4F4F;"><h4><b>Create Database</b></h4></a>
+<a href="deletedb" style="color: #4F4F4F ;"><h4><b>Delete Database</b></h4></a>
+{% endblock %}
+{% block main %}
+<form action="/" method="post">
+    <select name="databases" class="form-select">
+        <option disabled selected style="text-align:center;">Database</option>
+        {% for db in user_dbs %}
+        <option value="{{ db.dbname }}" style="text-align:center;">{{ db.dbname }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <button class="btn btn-primary" type="submit">Select</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Create Table
+{% endblock %}
+
+{% block main %}
+<script>
+    function trial() {
+        number = document.querySelector('#clmnum').value;
+        number = parseFloat(number);
+
+        // Make sure input is larger than zero.
+        if (number < 1 || !number) {
+            alert("Number must be bigger than zero.")
+            return;
+        }
+
+        // Required template divs.
+        div = document.getElementById('spcdiv');
+        html_final = '';
+
+        // Make loop that prints template n times.
+        for (i = 0; i < number; i++) {
+            txtc = "txt" + i.toString();
+            datatype = "datatype" + i.toString();
+            txt = '<input type="text" name="' + txtc + '" autofocus required autocomplete="off" placeholder="Column Name">'
+            slct = '<select name="' + datatype + '" >\n<option disabled selected>DataType</option>\n{% for dt in datatypes %}\n<option value="{{ dt }}">{{ dt }}</option>\n{% endfor %}\n</select>'
+            html = txt + slct + ' <br> ' ;
+            html_final += html;
+        }
+        div.innerHTML = html_final;
+
+
+    };
+
+</script>
+<h1>create table page</h1>
+<form id="form" action="/createtb" method="post">
+    <div class="inp">
+    <input type="text" class="form-control mx-auto w-auto" name="tbname" autofocus required autocomplete="off" placeholder="Table Name">
+    <br>
+    <h5><b>Number of columns:</b></h5>
+    <input id="clmnum" type="number" class="form-control mx-auto w-auto" name="num-clm" required autocomplete="off" value="1">
+    <button type="button" id="load" class="btn btn-primary" onclick="trial();">Load</button>
+    <br>
+    </div>
+    <div id="spcdiv">
+        <div class="template">
+            <input type="text" name="txt0" autofocus required autocomplete="off" placeholder="Column Name">
+            <select name="datatype0" >
+                <option disabled selected>DataType</option>
+                {% for dt in datatypes %}
+                <option value="{{ dt }}">{{ dt }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <br>
+    <button class="btn btn-primary" type="submit">Create</button>
+</form>
+<h1>{{ table_command }}</h1>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Available Databases
+{% endblock %}
+
+{% block main %}
+<form action="/createdb" method="post">
+    <div class="inp">
+    <input type="text" class="form-control mx-auto w-auto" name="dbname" autofocus autocomplete="off" placeholder="Database Name">
+    <br>
+    <button class="btn btn-primary" type="submit">Create</button>
+    </div>
+</form>
+
+{% endblock %}

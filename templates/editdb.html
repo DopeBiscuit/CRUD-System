@@ -1,0 +1,135 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Edit Database
+{% endblock %}
+
+
+{% block btns %}
+<a href="createtb" style="color: #4F4F4F;"><h4><b>Create Table</b></h4></a>
+<a href="deletetb" style="color: #4F4F4F ;"><h4><b>Delete Table</b></h4></a>
+{% endblock %}
+{% block main %}
+
+<form action="/editdb" method="post">
+    <select name="tables" class="form-select" aria-label="Tables">
+        <option disabled selected style="text-align:center">Table</option>
+        {% for tbname in tbnames %}
+        <option value="{{ tbname.name }}" style="text-align:center">{{ tbname.name }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <button class="btn btn-primary" type="submit">Select</button>
+</form>
+
+<form action="/delrow" method="post" id="delrow"></form>
+<form action="/addrow" method="post" id="addrow"></form>
+
+
+<div id="tbl-data">
+    <table class="table table-striped">
+
+    </table>
+</div>
+
+<script>
+    window.onload = main();
+    function main() {
+        body = document.getElementsByTagName('body')[0];
+        table = document.getElementsByClassName('table table-striped')[0];
+        thead = document.createElement('thead');
+        tbody = document.createElement('tbody');
+        {% for i in range(data_len) %}
+            tmp = document.createElement('form')
+            form_id = 'form' + "{{ data[i][keys[0]] }}"
+            tmp.setAttribute("action", "/editrow")
+            tmp.setAttribute("method", "POST")
+            tmp.setAttribute("id", form_id)
+            body.appendChild(tmp);
+        {% endfor %}
+
+
+        {% for i in range(1,row_len) %}
+            tmp = document.createElement('th');
+            tmp.innerHTML = "{{ keys[i] }}";
+            thead.appendChild(tmp);
+        {% endfor %}
+
+
+        console.log(thead)
+
+        {% for j in range(data_len) %}
+            i = 1;
+            tr_id = "tr" + "{{ data[j][keys[0]] }}";
+            tmp_tr = document.createElement('tr');
+            tmp_tr.setAttribute("id", tr_id);
+            form_id = 'form' + "{{ data[j][keys[0]] }}";
+
+            {% for i in range(1,row_len) %}
+                tmp_td = document.createElement('td');
+                txt_name = 'txt' + i.toString();
+                {% if dtypes[i]["type"] == 'INTEGER' %}
+                    tmp_td.innerHTML = '<input type="number" name="' + txt_name +'" autocomplete="off" form="' + form_id + '" class="form-control mx-auto w-auto" value="{{ data[j][keys[i]] }}">';
+                {% elif  dtypes[i]["type"] == 'REAL' or dtypes[i]["type"] == 'NUMERIC' %}
+                    tmp_td.innerHTML = '<input type="number" step="any" name="' + txt_name +'" autocomplete="off" form="' + form_id + '" class="form-control mx-auto w-auto" value="{{ data[j][keys[i]] }}">';
+                {% else %}
+                    tmp_td.innerHTML = '<input type="text" name="' + txt_name +'" autocomplete="off" form="' + form_id + '" class="form-control mx-auto w-auto" value="{{ data[j][keys[i]] }}">';
+                {% endif %}
+                tmp_tr.appendChild(tmp_td);
+                i++;
+            {% endfor %}
+            console.log(tmp_tr);
+
+            tmp_td = document.createElement('td');
+            btn_value = "{{ data[j][keys[0]] }} {{ table }}";
+            tmp_td.innerHTML = '<button type="submit" name="delbtn" value="' + btn_value + '" class="btn btn-primary" form="delrow">Delete</button>';
+            tmp_tr.appendChild(tmp_td);
+            tmp_td = document.createElement('td');
+            tmp_td.innerHTML = '<button type="submit" name="editbtn" value="' + btn_value + '" class="btn btn-primary" form="' + form_id + '">Edit</button>';
+            tmp_tr.appendChild(tmp_td);
+            console.log(tmp_tr);
+
+            tbody.appendChild(tmp_tr);
+        {% endfor %}
+
+        console.log(tbody)
+
+        table.appendChild(thead);
+        table.appendChild(tbody);
+
+        {% if data_len > 0 %}
+            k = 1;
+            tmp_tr = document.createElement('tr');
+            {% for i in range(1,row_len)%}
+                tmp_td = document.createElement('td');
+                txt_name = 'txt' + k.toString();
+                {% if dtypes[i]["type"] == 'INTEGER' %}
+                    tmp_td.innerHTML = '<input type="number" name="' + txt_name + '" autocomplete="off" form="addrow" class="form-control mx-auto w-auto" value="">';
+                {% elif  dtypes[i]["type"] == 'REAL' or dtypes[i]["type"] == 'NUMERIC' %}
+                    tmp_td.innerHTML = '<input type="number" step="any" name="' + txt_name + '" autocomplete="off" form="addrow" class="form-control mx-auto w-auto" value="">';
+                {% else %}
+                    tmp_td.innerHTML = '<input type="text" name="' + txt_name + '" autocomplete="off" form="addrow" class="form-control mx-auto w-auto" value="">';
+                {% endif %}
+                tmp_tr.appendChild(tmp_td);
+                k++;
+            {% endfor %}
+            tmp_td = document.createElement('td');
+            tmp_td.setAttribute('colspan', '2')
+            tmp_td.innerHTML = '<button type="submit" name="addbtn" value="{{ table }}" class="btn btn-primary" form="addrow">Add</button>';
+            tmp_tr.appendChild(tmp_td);
+            tbody.appendChild(tmp_tr);
+        {% endif %}
+
+    }
+
+    function deleteRow(id) {
+        tr_id = 'tr' + id;
+        console.log(tr_id);
+
+        tr = document.getElementById(tr_id);
+        console.log(tr);
+        tr.parentNode.removeChild(tr);
+    }
+</script>
+
+{% endblock %}

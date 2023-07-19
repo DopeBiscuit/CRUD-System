@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Delete Database
+{% endblock %}
+
+{% block main %}
+<form action="/deletedb" method="post">
+    <select name="databases" class="form-select mx-auto w-auto">
+        <option disabled selected>Database</option>
+        {% for db in user_dbs %}
+        <option value="{{ db.dbname }}">{{ db.dbname }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <button class="btn btn-primary" type="submit">Delete</button>
+</form>
+
+{% endblock %}

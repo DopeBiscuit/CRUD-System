@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Delete table
+{% endblock %}
+
+{% block main %}
+<form action="/deletetb" method="post">
+    <select name="tables" class="form-select mx-auto w-auto">
+        <option disabled selected>Table</option>
+        {% for tbname in tbnames %}
+        <option value="{{ tbname.name }}">{{ tbname.name }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <button class="btn btn-primary" type="submit">Delete</button>
+</form>
+
+{% endblock %}
