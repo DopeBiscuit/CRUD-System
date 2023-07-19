@@ -5,12 +5,13 @@
 {% endblock %}
 
 {% block main %}
-    <div id="regdiv">
+    <div class="column my-custom-column justify-content-center align-items-center rounded" style="height: 475px;" id="regdiv">
         <form action="/register" method="post">
-            <input name="username" type="text" class="form-control mx-auto w-auto" autofocus autocomplete="off" placeholder="Username"><br>
-            <input name="password" type="password"  class="form-control mx-auto w-auto" autocomplete="off" placeholder="Password"><br>
-            <input name="confirmation" type="password"  class="form-control mx-auto w-auto" autocomplete="off" placeholder="Password Confirmation"><br>
-            <button class="btn btn-primary" type="submit">Register</button>
+            <p class="fw-bold fc-black pt-2" style="font-size: 52px; color: #0072c6;">Enter Your Credentials</p>
+            <div class="mb-3 row p-1"><input name="username" type="text" class="form-control my-custom-text form-control-lg mx-auto w-50" autofocus autocomplete="off" placeholder="Username"><br></div>
+            <div class="mb-3 row p-1"><input name="password" type="password"  class="form-control my-custom-text form-control-lg mx-auto w-50" autocomplete="off" placeholder="Password"><br></div>
+            <div class="mb-3 row p-1"><input name="confirmation" type="password"  class="form-control my-custom-text form-control-lg mx-auto w-50" autocomplete="off" placeholder="Password Confirmation"><br></div>
+            <button class="btn btn-primary my-custom-button pt-3 mx-auto"  type="submit">Register</button>
         </form>
     </div>
 

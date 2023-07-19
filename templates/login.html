@@ -5,13 +5,17 @@
 {% endblock %}
 
 {% block main %}
-    <form action="/login" method="post">
-        <div class="mb-3">
-            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="username" name="username" placeholder="Username" type="text">
-        </div>
-        <div class="mb-3">
-            <input class="form-control mx-auto w-auto" id="password" name="password" placeholder="Password" type="password">
-        </div>
-        <button class="btn btn-primary" type="submit">Log In</button>
-    </form>
+    <div class="column my-custom-column justify-content-center align-items-center rounded">
+
+        <p class="fw-bold fc-black pt-2" style="font-size: 52px; color: #0072c6;">Enter Your Credentials</p>
+        <form action="/login" method="post">
+            <div class="mb-3 p-2">
+                <input autocomplete="off" autofocus class="form-control my-custom-text form-control-lg mx-auto w-50" id="username" name="username" placeholder="Username" type="text">
+            </div>
+            <div class="mb-3 p-2 col-md-12">
+                <input class="form-control form-control-lg my-custom-text mx-auto w-50" id="password" name="password" placeholder="Password" type="password">
+            </div>
+            <button class="btn btn-primary my-custom-button pt-3 mx-auto" type="submit" style="height: 75px; width: 135px;">Log In</button>
+        </form>
+    </div>
 {% endblock %}
