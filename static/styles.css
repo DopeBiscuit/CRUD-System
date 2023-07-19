@@ -25,3 +25,57 @@ nav .navbar-brand .green
 body {
     background-color: #ECECEC;
 }
+
+.my-custom-column{
+            background-color: #ffffff;
+            height: 400px;
+            width: 800px;
+            color: #f2f2f2;
+            position: absolute;
+            top: 30%;
+            left: 30%;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+.my-custom-text{
+    border: 2px solid black;
+    height: 65px;
+    font-size: 24px;
+}
+
+.my-custom-button{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    background-color: #0072c6;
+    border-radius: 5px;
+    font-size: 28px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.my-custom-button:hover {
+    background-color: #ffa500;
+}
+
+/*.container {
+  width: 2000px;
+  height: 300px;
+  background-color: #fff;
+  color: #f2f2f2;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}*/
+
+/*.mb-3 {
+  font-size: 24px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 2px solid black;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}*/
