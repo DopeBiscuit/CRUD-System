@@ -2,6 +2,8 @@
 import os
 import re
 
+from dataclasses import dataclass
+
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
@@ -24,6 +26,11 @@ Session(app)
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///main.db")
 udb = 0
+
+@dataclass
+class Message:
+    type: str
+    message: str
 
 
 @app.after_request
@@ -373,10 +380,10 @@ def register():
 
     # If request method is post, meaning user has submitted registeration creditnetials.
     if request.method == "POST":
-
         # Ensure username was submitted
         if not request.form.get("username"):
-            return apology("must provide username", 400)
+            return render_template("register.html", messages=[Message(type="danger", message="No username :(")])
+            # return apology("must provide username", 400)
         username = request.form.get("username")
 
         # Ensure password was submitted

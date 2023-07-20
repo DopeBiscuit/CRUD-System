@@ -20,29 +20,65 @@
 
     <body>
 
-        <nav class="bg-blue border navbar navbar-expand-md navbar-light">
+        <!--<nav class="bg-blue border navbar navbar-expand-md navbar-light">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/"><span class="blue">C</span><span class="red">R</span><span class="yellow">U</span><span class="green">D</span> <span class="red"> System</span></a>
                 <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#navbar" data-bs-toggle="collapse" type="button">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbar">
-                    {% if session["user_id"] %}
+                    {/% if session["user_id"] %}
                         <ul class="navbar-nav me-auto mt-2">
-                            {% block nav %}{% endblock %}
+                            {/% block nav %}{/% endblock %}
                         </ul>
                         <ul class="navbar-nav ms-auto mt-2">
                             <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
                         </ul>
-                    {% else %}
+                    {/% else %}
                         <ul class="navbar-nav ms-auto mt-2">
                             <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
                             <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
                         </ul>
-                    {% endif %}
+                    {/% endif %}
                 </div>
             </div>
-        </nav>
+        </nav>-->
+        <nav class="navbar navbar-expand-lg bg-body-tertiary" >
+  <div class="container-fluid" >
+    <a class="navbar-brand" href="#">CRUDio</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled">Disabled</a>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
 
         {% if get_flashed_messages() %}
             <header>
@@ -51,6 +87,21 @@
                 </div>
             </header>
         {% endif %}
+
+        <div class="container">
+          {% if messages %}
+              <div class="row">
+                  <div class="col-sm-4 col-sm-offset-3" style="position: absolute; right:0px; top: 100px">
+                      {% for message in messages %}
+                          <div class="alert alert-{{ message.type }} alert-text alert-dismissible" role="alert">
+                              <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
+                              <p class="alert-text">{{ message.message }}</p>
+                          </div>
+                      {% endfor %}
+                  </div>
+              </div>
+          {% endif %}
+      </div>
 
         <div class="container" style="display:flex;justify-content:space-between;, ">{% block btns %}{% endblock %}</div>
 
