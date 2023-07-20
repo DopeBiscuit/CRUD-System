@@ -15,7 +15,7 @@
     <select name="tables" class="form-select" aria-label="Tables">
         <option disabled selected style="text-align:center">Table</option>
         {% for tbname in tbnames %}
-        <option value="{{ tbname.name }}" style="text-align:center">{{ tbname.name }}</option>
+        <option value="{{ tbname.name }}" style="text-align:center;">{{ tbname.name }}</option>
         {% endfor %}
     </select>
     <br>
