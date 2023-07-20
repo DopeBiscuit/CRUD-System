@@ -88,6 +88,21 @@
             </header>
         {% endif %}
 
+        <div class="container">
+          {% if messages %}
+              <div class="row">
+                  <div class="col-sm-4 col-sm-offset-3" style="position: absolute; right:0px; top: 100px">
+                      {% for message in messages %}
+                          <div class="alert alert-{{ message.type }} alert-text alert-dismissible" role="alert">
+                              <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
+                              <p class="alert-text">{{ message.message }}</p>
+                          </div>
+                      {% endfor %}
+                  </div>
+              </div>
+          {% endif %}
+      </div>
+
         <div class="container" style="display:flex;justify-content:space-between;, ">{% block btns %}{% endblock %}</div>
 
         <main class="container-fluid py-5 text-center">

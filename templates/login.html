@@ -1,21 +1,24 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Log In
+Log In
 {% endblock %}
 
 {% block main %}
-    <div class="column my-custom-column justify-content-center align-items-center rounded">
+<div class="column c-card justify-content-center align-items-center rounded">
 
-        <p class="fw-bold fc-black pt-2" style="font-size: 52px; color: #0072c6;">Enter Your Credentials</p>
-        <form action="/login" method="post">
-            <div class="mb-3 p-2">
-                <input autocomplete="off" autofocus class="form-control my-custom-text form-control-lg mx-auto w-50" id="username" name="username" placeholder="Username" type="text">
-            </div>
-            <div class="mb-3 p-2 col-md-12">
-                <input class="form-control form-control-lg my-custom-text mx-auto w-50" id="password" name="password" placeholder="Password" type="password">
-            </div>
-            <button class="btn btn-primary my-custom-button pt-3 mx-auto" type="submit" style="height: 75px; width: 135px;">Log In</button>
-        </form>
-    </div>
+    <p class="fw-bold mb-4" style="font-size: 1.75rem; color: #0072c6;">Enter Your Credentials</p>
+    <form action="/login" method="post">
+        <div class="row p-1">
+            <input autocomplete="off" autofocus class="form-control mx-auto"
+                id="username" name="username" placeholder="Username" type="text">
+        </div>
+        <div class="row p-1">
+            <input class="form-control mx-auto" id="password" name="password"
+                placeholder="Password" type="password">
+        </div>
+        <button class="btn btn-primary c-primary-button mb-4 mt-4 mx-auto w-100 fw-bold" type="submit">Log In</button>
+        <p>Don't have an account? <a href="/register">Register</a></p>
+    </form>
+</div>
 {% endblock %}

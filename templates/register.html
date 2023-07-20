@@ -1,18 +1,38 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Register
+Register
 {% endblock %}
 
 {% block main %}
-    <div class="column my-custom-column justify-content-center align-items-center rounded"  id="regdiv">
-        <form action="/register" method="post">
-            <p class="fw-bold fc-black mb-5" style="font-size: 52px; color: #0072c6;">Enter Your Credentials</p>
-            <div class="mb-3 row p-1"><input name="username" type="text" class="form-control my-custom-text form-control-lg mx-auto w-50" autofocus autocomplete="off" placeholder="Username"><br></div>
-            <div class="mb-3 row p-1"><input name="password" type="password"  class="form-control my-custom-text form-control-lg mx-auto w-50" autocomplete="off" placeholder="Password"><br></div>
-            <div class="mb-3 row p-1"><input name="confirmation" type="password"  class="form-control my-custom-text form-control-lg mx-auto w-50" autocomplete="off" placeholder="Password Confirmation"><br></div>
-            <button class="btn btn-primary my-custom-button mb-4 mt-5 mx-auto w-50"  type="submit"><b>Register</b></button>
-        </form>
-    </div>
+<div class="column c-card justify-content-center align-items-center rounded" id="regdiv">
+
+    <form action="/register" method="post">
+        <p class="fw-bold mb-4" style="font-size: 1.75rem; color: #0072c6;">Enter Your Credentials</p>
+
+        <div class="row p-1">
+            <input name="username" type="text" class="form-control my-custom-text mx-auto"
+                autofocus autocomplete="off" placeholder="Username">
+
+        </div>
+
+        <div class="row p-1">
+
+            <input name="password" type="password" class="form-control my-custom-text mx-auto"
+                autocomplete="off" placeholder="Password">
+
+        </div>
+
+        <div class="row p-1">
+
+            <input name="confirmation" type="password" class="form-control my-custom-text mx-auto"
+                autocomplete="off" placeholder="Password Confirmation">
+
+        </div>
+
+        <button class="btn btn-primary c-primary-button mb-4 mt-4 mx-auto w-100 fw-bold" type="submit">Register</button>
+        <p>Already have an account? <a href="/login">Login</a>.</p>
+    </form>
+</div>
 
 {% endblock %}

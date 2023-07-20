@@ -8,36 +8,27 @@ body {
     background-color: #ECECEC;
 }
 
-.my-custom-column{
+.c-card{
     background-color: #fff;
-    width: 800px;
-    color: #f2f2f2;
+    width: 50%;
     margin-left: auto;
     margin-right: auto;
     padding: 30px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     border-radius: 10px;
     box-shadow: 0 4px 40px -10px rgba(0, 0, 0, 0.05);
-        }
-
-.my-custom-text{
-    /*border: 2px solid black;*/
-    height: 65px;
-    font-size: 24px;
 }
 
-.my-custom-button{
+@media (min-width: 1200px) {
+    .c-card {
+        width: 33.33333%
+    }
+}
+
+.c-primary-button{
     display: flex;
     justify-content: center;
     align-content: center;
     background-color: #0072c6;
-    border-radius: 5px;
-    font-size: 28px;
-    padding: 10px;
-    cursor: pointer;
 }
 
 .my-custom-button:hover {
