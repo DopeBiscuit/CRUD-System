@@ -1,13 +1,16 @@
+#from crypt import methods
 import os
+import re
 
 from dataclasses import dataclass
 
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
+from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import login_required
+from helpers import apology, login_required
 
 # Configure application
 app = Flask(__name__)
@@ -23,7 +26,6 @@ Session(app)
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///main.db")
 udb = 0
-user_dbs = db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
 
 @dataclass
 class Message:
@@ -43,14 +45,12 @@ def after_request(response):
 @app.route("/", methods=["GET", "POST"])
 @login_required
 def index():
-    user_dbs =  db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
-    """Show portfolio of stocks"""
     # Check for request method.
+    user_dbs =  db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
     if request.method == "POST":
         # Ensure user selected a database
         if not request.form.get("databases"):
-            return render_template("index.html",messages=[Message(type="danger", message="Must select a database.")])
-
+            return render_template("index.html", user_dbs=user_dbs, messages=[Message(type="danger", message="Must select a database.")])
         # Get Selected Database then call it as a global variable for future reference.
         dbname = str(session["user_id"]) + request.form.get("databases") + ".db"
         global udb
@@ -59,51 +59,45 @@ def index():
 
     else:
         # Load up users's databases.
-        return render_template("index.html", )
+        return render_template("index.html", user_dbs=user_dbs)
 
 @app.route("/createdb", methods=["GET", "POST"])
 @login_required
 def createdb():
-    user_dbs =  db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
     """Makes a new database for a user."""
     # Check for request method.
     if request.method == "POST":
         # Ensure user gave a database name.
         if not request.form.get("dbname"):
             return render_template("createdb.html", messages=[Message(type="danger", message="Must provide database name.")])
-        
+
         # Get database name.
         dbname = request.form.get("dbname").lower()
 
         #Ensure no user has same name for their database.
         dbs = db.execute("SELECT dbname FROM ref WHERE dbname = ?", dbname)
         if dbs:
-            return render_template("createdb.html",usermessages=[Message(type="danger", message="Database name already exists.")])
-
+            return render_template("createdb.html", messages=[Message(type="danger", message="Database name not available.")])
 
         # Create database file in main directory
         f = open(str(session["user_id"]) + dbname + ".db", 'w')
         f.close()
 
         # Insert new database name with user id in the ref table in main database.
-        db.execute("INSERT INTO ref (id, dbname) VALUES (?, ?)",
-                   session["user_id"], dbname)
-
+        db.execute("INSERT INTO ref (id, dbname) VALUES (?, ?)", session["user_id"], dbname)
         return redirect("/")
     else:
-        return render_template("createdb.html", )
+        return render_template("createdb.html")
 
 
 @app.route("/editdb", methods=["GET", "POST"])
 @login_required
 def editdb():
-    user_dbs =  db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
     """Edit database,"""
     # Ensure user submitted data
     if request.method == "POST":
         if not request.form.get("tables"):
             return redirect("/editdb")
-
 
         table = request.form.get("tables")
 
@@ -114,7 +108,7 @@ def editdb():
         keys = list(data[0].keys())
         row_len = len(keys)
         data_len = len(data)
-        return render_template("editdb.html", data=data,keys=keys, row_len=row_len, data_len=data_len, table=table, tbnames=tbnames, dtypes=dtypes)
+        return render_template("editdb.html", data=data, keys=keys, row_len=row_len, data_len=data_len, table=table, tbnames=tbnames, dtypes=dtypes)
     else:
         tbnames = udb.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_sequence' ORDER BY name")
         data = []
@@ -122,32 +116,27 @@ def editdb():
         dtypes = []
         row_len = len(keys)
         data_len = len(data)
-        return render_template("editdb.html", tbnames=tbnames,data=data, keys=keys, row_len=row_len, data_len=data_len, dtypes=dtypes)
+        return render_template("editdb.html", tbnames=tbnames, data=data, keys=keys, row_len=row_len, data_len=data_len, dtypes=dtypes)
 
 @app.route("/createtb", methods=["GET", "POST"])
 @login_required
 def createtb():
-    user_dbs =  db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
     """Makes a new table for a user."""
     # Check for request method.
     if request.method == "POST":
         # Ensure user gave a table name.
         if not request.form.get("tbname"):
-            datatypes = ["TEXT", "INTEGER", "REAL", "NUMERIC", "BLOB"]
-            return render_template("createtb.html", datatypes=datatypes,messages=[Message(type="danger", message="Must provide table name.")])
-
+            return render_template("createtb.html", messages=[Message(type="danger", message="Must provide a table name.")])
 
         # Ensure first letter is alphabetic
         tbname = request.form.get("tbname").lower().replace(' ', '_')
         if not tbname[0].isalpha():
-            datatypes = ["TEXT", "INTEGER", "REAL", "NUMERIC", "BLOB"]
-            return render_template("createtb.html", datatypes=datatypes,messages=[Message(type="danger", message="First character of table name must be an alphabetic character.")])
+            return render_template("createtb.html", messages=[Message(type="danger", message="First character of the table name must be an alphabetic character.")])
 
         # Get table name and check availability.
         tbnames = udb.execute("SELECT name FROM sqlite_master WHERE type='table' AND name = ? ORDER BY name", tbname)
         if tbnames:
-            datatypes = ["TEXT", "INTEGER", "REAL", "NUMERIC", "BLOB"]
-            return render_template("createtb.html", datatypes=datatypes ,, messages=[Message(type="danger", message="Table name already exists.")])
+            return render_template("createtb.html", messages=[Message(type="danger", message="Table name already in use.")])
 
         # Loop through user's input to make table
         clm_num = int(request.form.get("num-clm"))
@@ -164,8 +153,7 @@ def createtb():
             data_type = request.form.get(dtype)
 
             if not clm_name[0].isalpha():
-                datatypes = ["TEXT", "INTEGER", "REAL", "NUMERIC", "BLOB"]
-                return render_template("createtb.html", datatypes=datatypes ,, messages=[Message(type="danger", message="First character of column name must be an alphabetic character.")])
+                return render_template("createtb.html", messages=[Message(type="danger", message="First character of column name must be an alphabetic character.")])
 
             if not data_type:
                 data_type = 'TEXT'
@@ -196,12 +184,11 @@ def createtb():
         return redirect("/editdb")
     else:
         datatypes = ["TEXT", "INTEGER", "REAL", "NUMERIC", "BLOB"]
-        return render_template("createtb.html",datatypes=datatypes)
+        return render_template("createtb.html", datatypes=datatypes)
 
 @app.route("/delrow", methods=["POST"])
 @login_required
 def delrow():
-    user_dbs =  db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
     # Get value of pressed button to get secret_id.
     btn_val = request.form.get("delbtn").split()
     ID = btn_val[0]
@@ -209,8 +196,7 @@ def delrow():
     data = udb.execute("SELECT * FROM ?", name)
 
     if len(data) == 1:
-        return render_template("editdb.html", data=data,keys=keys, row_len=row_len, data_len=data_len, table=name, tbnames=tbnames, dtypes=dtypes, messages=[Message(type="danger", message="Cant delete all rows, would you like to drop table instead ?")])
-    
+        return redirect("/deletetb")
     # Delete row from table
     udb.execute("DELETE FROM ? WHERE secret_id = ?", name,ID)
     data = udb.execute("SELECT * FROM ?", name)
@@ -219,7 +205,7 @@ def delrow():
     keys = list(data[0].keys())
     row_len = len(keys)
     data_len = len(data)
-    return render_template("editdb.html", data=data,keys=keys, row_len=row_len, data_len=data_len, table=name, tbnames=tbnames, dtypes=dtypes)
+    return render_template("editdb.html", data=data, keys=keys, row_len=row_len, data_len=data_len, table=name, tbnames=tbnames, dtypes=dtypes)
 
 
 
@@ -227,7 +213,6 @@ def delrow():
 @app.route("/editrow", methods=["POST"])
 @login_required
 def editrow():
-    user_dbs =  db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
     # Get values of rows to be editited
     btn_val = request.form.get("editbtn").split()
     ID = btn_val[0]
@@ -257,13 +242,12 @@ def editrow():
     keys = list(data[0].keys())
     row_len = len(keys)
     data_len = len(data)
-    return render_template("editdb.html", data=data,keys=keys, row_len=row_len, data_len=data_len, table=tbname, tbnames=tbnames, dtypes=dtypes)
+    return render_template("editdb.html", data=data, keys=keys, row_len=row_len, data_len=data_len, table=tbname, tbnames=tbnames, dtypes=dtypes)
 
 
 @app.route("/addrow", methods=["POST"])
 @login_required
 def addrow():
-    user_dbs =  db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
     # Get values of row to be added
     tbname = request.form.get("addbtn")
 
@@ -295,17 +279,15 @@ def addrow():
     keys = list(data[0].keys())
     row_len = len(keys)
     data_len = len(data)
-    return render_template("editdb.html", data=data,keys=keys, row_len=row_len, data_len=data_len, table=tbname, tbnames=tbnames, dtypes=dtypes)
+    return render_template("editdb.html", data=data, keys=keys, row_len=row_len, data_len=data_len, table=tbname, tbnames=tbnames, dtypes=dtypes)
 
 
 @app.route("/deletetb", methods=["GET", "POST"])
 @login_required
 def deletetb():
-    user_dbs =  db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
     if request.method == "POST":
         if not request.form.get("tables"):
-            tbnames = udb.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_sequence' ORDER BY name")
-            return render_template("deletetb.html",tbnames=tbnames, messages=[Message(type="danger", message="Must select a table.")])
+            return render_template("deletetb.html", messages=[Message(type="danger", message="Must select a table.")])
 
         table = request.form.get("tables")
         udb.execute("DROP TABLE ?", table)
@@ -314,8 +296,7 @@ def deletetb():
         return redirect("/editdb")
     else:
         tbnames = udb.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_sequence' ORDER BY name")
-        user_dbs =  db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
-        return render_template("deletetb.html",tbnames=tbnames)
+        return render_template("deletetb.html", tbnames=tbnames)
 
 
 @app.route("/deletedb", methods=["GET", "POST"])
@@ -326,7 +307,7 @@ def deletedb():
     if request.method == "POST":
         # Ensure user selected a database
         if not request.form.get("databases"):
-            return render_template("deletedb.html",messages=[Message(type="danger", message="Must select a database.")])
+            return render_template("deletedb.html", user_dbs=user_dbs, messages=[Message(type="danger", message="Must pick a database.")])
 
         # Delete selected database
         dbname = str(session["user_id"]) + request.form.get("databases") + ".db"
@@ -334,17 +315,15 @@ def deletedb():
         os.remove(f"{dbname}")
         # Remove database from ref table in main database
         db.execute("DELETE FROM ref WHERE dbname = ?", dbn)
-
         return redirect("/")
     else:
         # Load up users's databases.
-        return render_template("deletedb.html")
+        return render_template("deletedb.html", user_dbs=user_dbs)
 
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    user_dbs = []
     """Log user in"""
 
     # Forget any user_id
@@ -355,18 +334,18 @@ def login():
 
         # Ensure username was submitted
         if not request.form.get("username"):
-            return render_template("login.html",messages=[Message(type="danger", message="Must provide username.")])
+            return render_template("login.html", messages=[Message(type="danger", message="Must provide username")])
 
         # Ensure password was submitted
         elif not request.form.get("password"):
-            return render_template("login.html",messages=[Message(type="danger", message="Must provide password.")])
+            return render_template("login.html", messages=[Message(type="danger", message="Must provide password")])
 
         # Query database for username
         rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
 
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
-            return render_template("login.html",messages=[Message(type="danger", message="Invalid username and/or password.")])
+            return render_template("login.html", messages=[Message(type="danger", message="Invalid username and/or password")])
 
         # Remember which user has logged in
         session["user_id"] = rows[0]["id"]
@@ -376,7 +355,7 @@ def login():
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
-        return render_template("login.html", )
+        return render_template("login.html")
 
 
 @app.route("/logout")
@@ -392,29 +371,26 @@ def logout():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    user_dbs=[]
     """Register user"""
 
     # If request method is post, meaning user has submitted registeration creditnetials.
     if request.method == "POST":
         # Ensure username was submitted
         if not request.form.get("username"):
-            return render_template("register.html",messages=[Message(type="danger", message="Must provide username.")])
-
+            return render_template("register.html", messages=[Message(type="danger", message="Must provide username.")])
         username = request.form.get("username")
 
         # Ensure password was submitted
         if not request.form.get("password"):
-            return render_template("register.html",messages=[Message(type="danger", message="Must provide password.")])
+            return render_template("register.html", messages=[Message(type="danger", message="Must provide password")])
 
         # Ensure password confirmation was submitted
         if not request.form.get("confirmation"):
-            return render_template("register.html",messages=[Message(type="danger", message="Must provide password confirmation.")])
-
+            return render_template("register.html", messages=[Message(type="danger", message="Must provide password confirmation.")])
 
         # Ensure password matches password confirmation.
         if request.form.get("password") != request.form.get("confirmation"):
-            return render_template("register.html",messages=[Message(type="danger", message="Password and password confirmation must match.")])
+            return render_template("register.html", messages=[Message(type="danger", message="Password and password confirmation must match.")])
         password = request.form.get("password")
 
         # Query database for usernames to make sure it is unique.
@@ -422,7 +398,7 @@ def register():
 
         # Ensure username doesn't exist
         if len(usernames) != 0:
-            return render_template("register.html",messages=[Message(type="danger", message="Username already exists.")])
+            return render_template("register.html", messages=[Message(type="danger", message="Username already exists.")])
 
         # If all checks are green, then insert new row into users table in database with new data.
         db.execute("INSERT INTO users (username,hash) VALUES (?,?)", username, generate_password_hash(password))
@@ -435,5 +411,5 @@ def register():
         return redirect("/")
 
     else:
-        return render_template("register.html", )
+        return render_template("register.html")
 
