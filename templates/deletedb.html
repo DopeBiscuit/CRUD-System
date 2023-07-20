@@ -5,15 +5,17 @@
 {% endblock %}
 
 {% block main %}
-<form action="/deletedb" method="post">
-    <select name="databases" class="form-select mx-auto w-auto">
-        <option disabled selected>Database</option>
-        {% for db in user_dbs %}
-        <option value="{{ db.dbname }}">{{ db.dbname }}</option>
-        {% endfor %}
-    </select>
-    <br>
-    <button class="btn btn-primary" type="submit">Delete</button>
+<div class="c-card w-50">
+    <form action="/deletedb" method="post">
+        <select name="databases" class="form-select form-select-lg mx-auto w-100" style="text-align: center; ">
+            <option disabled selected>Database</option>
+            {% for db in user_dbs %}
+            <option value="{{ db.dbname }}">{{ db.dbname }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <button class="btn btn-primary c-primary-button mb-4 mt-4 mx-auto w-100 fw-bold" type="submit">Delete</button>
 </form>
+</div>
 
 {% endblock %}

@@ -5,40 +5,48 @@
 {% endblock %}
 
 
-{% block btns %}
-<a href="createtb" style="color: #4F4F4F;"><h4><b>Create Table</b></h4></a>
-<a href="deletetb" style="color: #4F4F4F ;"><h4><b>Delete Table</b></h4></a>
-{% endblock %}
 {% block main %}
+<div class="c-card w-50 mb-5">
+    <div class="row">
+        <a href="createtb" class="btn btn-primary c-primary-button m-3 mx-auto fw-bold col-md-4 order-1" >Create Table</a>
+        <a href="deletetb" class="btn btn-primary c-primary-button m-3 mx-auto  fw-bold col-md-4 order-2" >Delete Table</a>
+    </div>
 
-<form action="/editdb" method="post">
-    <select name="tables" class="form-select" aria-label="Tables">
-        <option disabled selected style="text-align:center">Table</option>
-        {% for tbname in tbnames %}
-        <option value="{{ tbname.name }}" style="text-align:center;">{{ tbname.name }}</option>
-        {% endfor %}
-    </select>
-    <br>
-    <button class="btn btn-primary" type="submit">Select</button>
-</form>
+    <form action="/editdb" method="post">
+        <select name="tables" class="form-select form-select-lg mt-4 mx-auto w-100" aria-label="Tables">
+            <option disabled selected style="text-align:center">Table</option>
+            {% for tbname in tbnames %}
+            <option value="{{ tbname.name }}" style="text-align:center;">{{ tbname.name }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <button class="btn btn-primary c-primary-button mb-4 mt-4 mx-auto w-50 fw-bold" type="submit">Select</button>
+    </form>
+</div>
+
+<hr style="border-top: 5px solid #033457; border-radius: 3px;" class="mb-5">
 
 <form action="/delrow" method="post" id="delrow"></form>
 <form action="/addrow" method="post" id="addrow"></form>
 
 
-<div id="tbl-data">
-    <table class="table table-striped">
 
+    <table class="table table-striped thead-dark table-hover    ">
+        <thead id="thh" style="background-color: #0072c6; color: white; border: 1px white;">
+
+        </thead>
+        <tbody id="tbb">
+
+        </tbody>
     </table>
-</div>
 
 <script>
     window.onload = main();
     function main() {
         body = document.getElementsByTagName('body')[0];
-        table = document.getElementsByClassName('table table-striped')[0];
-        thead = document.createElement('thead');
-        tbody = document.createElement('tbody');
+        table = document.getElementsByClassName('table')[0];
+        thead = document.getElementById('thh');
+        tbody = document.getElementById('tbb');
         {% for i in range(data_len) %}
             tmp = document.createElement('form')
             form_id = 'form' + "{{ data[i][keys[0]] }}"

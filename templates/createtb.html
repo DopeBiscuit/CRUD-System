@@ -48,7 +48,7 @@
     <div id="spcdiv">
         <div class="template">
             <input type="text" name="txt0" autofocus required autocomplete="off" placeholder="Column Name">
-            <select name="datatype0" >
+            <select name="datatype0" required>
                 <option disabled selected>DataType</option>
                 {% for dt in datatypes %}
                 <option value="{{ dt }}">{{ dt }}</option>

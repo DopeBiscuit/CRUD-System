@@ -5,15 +5,17 @@
 {% endblock %}
 
 {% block main %}
-<form action="/deletetb" method="post">
-    <select name="tables" class="form-select mx-auto w-auto">
-        <option disabled selected>Table</option>
-        {% for tbname in tbnames %}
-        <option value="{{ tbname.name }}">{{ tbname.name }}</option>
-        {% endfor %}
-    </select>
-    <br>
-    <button class="btn btn-primary" type="submit">Delete</button>
-</form>
+<div class="c-card w-50">
+    <form action="/deletetb" method="post">
+        <select name="tables" class="form-select form-select-lg mx-auto w-100" style="text-align: center; ">
+            <option disabled selected>Table</option>
+            {% for tbname in tbnames %}
+            <option value="{{ tbname.name }}">{{ tbname.name }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <button class="btn btn-primary c-primary-button mb-4 mt-4 mx-auto w-100 fw-bold" type="submit">Delete</button>
+    </form>
+</div>
 
 {% endblock %}

@@ -29,10 +29,11 @@ body {
     justify-content: center;
     align-content: center;
     background-color: #0072c6;
+    text-align: center;
 }
 
 .c-primary-button:hover {
-    background-color: #ffa500;
+    background-color: #033457;
 }
 
 /*.container {

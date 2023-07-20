@@ -5,12 +5,13 @@
 {% endblock %}
 
 {% block main %}
-<form action="/createdb" method="post">
-    <div class="inp">
-    <input type="text" class="form-control mx-auto w-auto" name="dbname" autofocus autocomplete="off" placeholder="Database Name">
-    <br>
-    <button class="btn btn-primary" type="submit">Create</button>
-    </div>
-</form>
-
+<div class="c-card w-50" >
+    <form action="/createdb" method="post">
+        <div class="inp">
+        <input type="text" class="form-control form-control-lg mx-auto w-100" name="dbname" autofocus autocomplete="off" placeholder="Database Name">
+        <br>
+        <button class="btn btn-primary c-primary-button mb-4 mt-4 mx-auto w-100 fw-bold"  type="submit"><b>Create</b></button>
+        </div>
+    </form>
+</div>
 {% endblock %}
