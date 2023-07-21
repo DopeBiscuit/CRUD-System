@@ -17,47 +17,52 @@
         }
 
         // Required template divs.
-        div = document.getElementById('spcdiv');
-        html_final = '';
+        parentDiv = document.getElementById('spcdiv');
+        tempDiv = document.createElement("div");
+
 
         // Make loop that prints template n times.
         for (i = 0; i < number; i++) {
+            div = document.createElement("div");
             txtc = "txt" + i.toString();
             datatype = "datatype" + i.toString();
-            txt = '<input type="text" name="' + txtc + '" autofocus required autocomplete="off" placeholder="Column Name">'
-            slct = '<select name="' + datatype + '" >\n<option disabled selected>DataType</option>\n{% for dt in datatypes %}\n<option value="{{ dt }}">{{ dt }}</option>\n{% endfor %}\n</select>'
-            html = txt + slct + ' <br> ' ;
-            html_final += html;
+            txt = '<input type="text" name="' + txtc + '" class="form-control mx-auto w-100 mb-2" autofocus required autocomplete="off" placeholder="Column Name">'
+            slct = '<select name="' + datatype + '" class="form-select form-select-sm  mx-auto w-50 mb-2">\n<option disabled selected>DataType</option>\n{% for dt in datatypes %}\n<option value="{{ dt }}">{{ dt }}</option>\n{% endfor %}\n</select>'
+            html = txt + slct ;
+            div.innerHTML = html;
+            div.setAttribute("class", "tb-row");
+            tempDiv.appendChild(div);  
         }
-        div.innerHTML = html_final;
-
-
+        tempDiv.appendChild(document.getElementById("submit-button"));
+        parentDiv.innerHTML = tempDiv.innerHTML;
     };
 
 </script>
-<h1>create table page</h1>
 <form id="form" action="/createtb" method="post">
-    <div class="inp">
-    <input type="text" class="form-control mx-auto w-auto" name="tbname" autofocus required autocomplete="off" placeholder="Table Name">
-    <br>
-    <h5><b>Number of columns:</b></h5>
-    <input id="clmnum" type="number" class="form-control mx-auto w-auto" name="num-clm" required autocomplete="off" value="1">
-    <button type="button" id="load" class="btn btn-primary" onclick="trial();">Load</button>
-    <br>
+    <div class="c-card w-50 mb-5">
+        <p class="fw-bold mb-4" style="font-size: 1.75rem; color: #0072c6;">Enter Table Information</p>
+            <div class="inp d-flex justify-content-lg-around" style="gap: 1rem;">
+                <input type="text" class="form-control mb-4 mx-auto w-100" name="tbname" autofocus required autocomplete="off" placeholder="Table Name">
+                <input id="clmnum" type="number" class="form-control mb-4 mx-auto w-100" name="num-clm" required autocomplete="off" placeholder="Number of columns">
+            </div>
+            <div class="row">
+                <button type="button" id="load" class="btn btn-primary mt-1 mx-auto c-primary-button w-100" onclick="trial();">Load</button>
+            </div>
     </div>
-    <div id="spcdiv">
-        <div class="template">
-            <input type="text" name="txt0" autofocus required autocomplete="off" placeholder="Column Name">
-            <select name="datatype0" required>
+
+    <div id="spcdiv" class="c-card w-50">
+        <div class="tb-row">
+            <input type="text" class="form-control mx-auto w-100 mb-2" name="txt0" autofocus required autocomplete="off" placeholder="Column Name">
+            <select name="datatype0" class="form-select form-select-sm  mx-auto w-50 mb-2" required>
                 <option disabled selected>DataType</option>
                 {% for dt in datatypes %}
                 <option value="{{ dt }}">{{ dt }}</option>
                 {% endfor %}
             </select>
         </div>
+        <button id="submit-button" class="btn btn-primary mt-1 mx-auto c-primary-button w-100 mt-4" type="submit">Create</button>
     </div>
-    <br>
-    <button class="btn btn-primary" type="submit">Create</button>
+    
 </form>
 <h1>{{ table_command }}</h1>
 

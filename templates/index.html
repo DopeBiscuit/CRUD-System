@@ -1,27 +1,31 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Available Databases
+Available Databases
 {% endblock %}
 <div class="c-card w-auto">
     {% block main %}
     <div class="c-card w-50 ">
-        <div class="row">
-            <a href="createdb" class="btn btn-primary c-primary-button m-3 mx-auto fw-bold col-md-4 order-1" >Create Database</a>
-            <a href="deletedb" class="btn btn-primary c-primary-button m-3 mx-auto  fw-bold col-md-4 order-2" >Delete Database</a>
-        </div>
+        <form action="/" method="post" style="display: flex; gap: 1rem;">
+            <select name="databases" class="form-select mx-auto w-100">
+                <option disabled selected style="text-align:center;">Database</option>
+                {% for db in user_dbs %}
+                <option value="{{ db.dbname }}" style="text-align:center;">{{ db.dbname }}</option>
+                {% endfor %}
+            </select>
+            <button class="btn btn-primary c-primary-button mx-auto w-50 fw-bold" type="submit">Select</button>
 
-    <form action="/" method="post">
-        <select name="databases" class="form-select form-select-lg mt-4 mx-auto w-100">
-            <option disabled selected style="text-align:center;">Database</option>
-            {% for db in user_dbs %}
-            <option value="{{ db.dbname }}" style="text-align:center;">{{ db.dbname }}</option>
-            {% endfor %}
-        </select>
-        <br>
-        <button class="btn btn-primary c-primary-button mb-4 mt-4 mx-auto w-50 fw-bold" type="submit">Select</button>
+        </form>
+
+        <div style="display: flex; gap: 0.5rem; margin-top: 3rem;">
+            <a style="flex: 1;" href="createdb" class="btn btn-success col-md-4 order-1">Create
+                Database
+            </a>
+            <a style="flex: 1;" href="deletedb" class="btn btn-danger col-md-4 order-2">Delete
+                Database
+            </a>
         </div>
-    </form>
+    </div>
 </div>
 
 {% endblock %}
