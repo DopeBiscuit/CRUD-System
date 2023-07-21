@@ -26,6 +26,7 @@ Session(app)
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///main.db")
 udb = 0
+user_dbs = []
 
 @dataclass
 class Message:
@@ -41,6 +42,12 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
+@app.context_processor
+def get_user_dbs():
+    if session.get("user_id"):
+        placeholder = db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
+        return dict(databases=placeholder)
+    return dict()
 
 @app.route("/", methods=["GET", "POST"])
 @login_required
@@ -64,6 +71,7 @@ def index():
 @app.route("/createdb", methods=["GET", "POST"])
 @login_required
 def createdb():
+    user_dbs =  db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
     """Makes a new database for a user."""
     # Check for request method.
     if request.method == "POST":
@@ -93,6 +101,7 @@ def createdb():
 @app.route("/editdb", methods=["GET", "POST"])
 @login_required
 def editdb():
+    user_dbs =  db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
     """Edit database,"""
     # Ensure user submitted data
     if request.method == "POST":
@@ -121,6 +130,7 @@ def editdb():
 @app.route("/createtb", methods=["GET", "POST"])
 @login_required
 def createtb():
+    user_dbs =  db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
     """Makes a new table for a user."""
     # Check for request method.
     if request.method == "POST":
@@ -189,6 +199,7 @@ def createtb():
 @app.route("/delrow", methods=["POST"])
 @login_required
 def delrow():
+    user_dbs =  db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
     # Get value of pressed button to get secret_id.
     btn_val = request.form.get("delbtn").split()
     ID = btn_val[0]
@@ -213,6 +224,7 @@ def delrow():
 @app.route("/editrow", methods=["POST"])
 @login_required
 def editrow():
+    user_dbs =  db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
     # Get values of rows to be editited
     btn_val = request.form.get("editbtn").split()
     ID = btn_val[0]
@@ -248,6 +260,7 @@ def editrow():
 @app.route("/addrow", methods=["POST"])
 @login_required
 def addrow():
+    user_dbs =  db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
     # Get values of row to be added
     tbname = request.form.get("addbtn")
 
@@ -285,6 +298,7 @@ def addrow():
 @app.route("/deletetb", methods=["GET", "POST"])
 @login_required
 def deletetb():
+    user_dbs =  db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
     if request.method == "POST":
         if not request.form.get("tables"):
             return render_template("deletetb.html", messages=[Message(type="danger", message="Must select a table.")])
@@ -366,7 +380,7 @@ def logout():
     session.clear()
 
     # Redirect user to login form
-    return redirect("/")
+    return redirect("/login")
 
 
 @app.route("/register", methods=["GET", "POST"])

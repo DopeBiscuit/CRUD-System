@@ -2,25 +2,28 @@
 
 <html lang="en">
 
-    <head>
+<head>
 
-        <meta charset="utf-8">
-        <meta name="viewport" content="initial-scale=1, width=device-width">
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
 
-        <!-- http://getbootstrap.com/docs/5.1/ -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <!-- http://getbootstrap.com/docs/5.1/ -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
 
 
-        <link href="/static/styles.css" rel="stylesheet">
+    <link href="/static/styles.css" rel="stylesheet">
 
-        <title>CRUD System: {% block title %}{% endblock %}</title>
+    <title>CRUD System: {% block title %}{% endblock %}</title>
 
-    </head>
+</head>
 
-    <body>
+<body>
 
-        <!--<nav class="bg-blue border navbar navbar-expand-md navbar-light">
+    <!--<nav class="bg-blue border navbar navbar-expand-md navbar-light">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/"><span class="blue">C</span><span class="red">R</span><span class="yellow">U</span><span class="green">D</span> <span class="red"> System</span></a>
                 <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#navbar" data-bs-toggle="collapse" type="button">
@@ -43,67 +46,80 @@
                 </div>
             </div>
         </nav>-->
-        <nav class="navbar navbar-expand-lg bg-body-tertiary" >
-  <div class="container-fluid" >
-    <a class="navbar-brand" href="#">CRUDio</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-togbygle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Databases
-          </a>
-          <ul class="dropdown-menu">
-            {% for db in user_dbs %}
-            <li><a class="dropdown-item" href="#">{{ db.dbname }}</a></li>
-            <li><hr class="dropdown-divider"></li>
-            {% endfor %}
-          </ul>
-        </li>
-      </ul>
-      {% if session["user_id"] %}
-      <form class="d-flex" role="logout">
-          <a class="nav-link active" aria-current="page" href="/logout">Log Out</a>
-      </form>
-      {% endif %}
-    </div>
-  </div>
-</nav>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">CRUDio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    {% if databases %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-togbygle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Databases
+                        </a>
+                        <ul class="dropdown-menu">
+                            <form action="/" method="post">
+                                {% for db in databases %}
+                                {% if loop.index0 %}
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                {% endif%}
 
-        {% if get_flashed_messages() %}
-            <header>
-                <div class="alert alert-primary mb-0 text-center" role="alert">
-                    {{ get_flashed_messages() | join(" ") }}
+                                <li><button name="databases" class="dropdown-item btn btn-primary" href="#"
+                                        type="submit" value="{{ db['dbname'] }}">{{ db['dbname'] }}</button></li>
+                                {% endfor %}
+                            </form>
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+                {% if session["user_id"] %}
+                <form class="d-flex" role="logout">
+                    <a class="nav-link active" aria-current="page" href="/logout">Log Out</a>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    {% if get_flashed_messages() %}
+    <header>
+        <div class="alert alert-primary mb-0 text-center" role="alert">
+            {{ get_flashed_messages() | join(" ") }}
+        </div>
+    </header>
+    {% endif %}
+
+    <div class="container">
+        {% if messages %}
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-3" style="position: absolute; right:0px; top: 100px">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.type }} alert-text alert-dismissible" role="alert">
+                    <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
+                    <p class="alert-text">{{ message.message }}</p>
                 </div>
-            </header>
+                {% endfor %}
+            </div>
+        </div>
         {% endif %}
+    </div>
 
-        <div class="container">
-          {% if messages %}
-              <div class="row">
-                  <div class="col-sm-4 col-sm-offset-3" style="position: absolute; right:0px; top: 100px">
-                      {% for message in messages %}
-                          <div class="alert alert-{{ message.type }} alert-text alert-dismissible" role="alert">
-                              <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
-                              <p class="alert-text">{{ message.message }}</p>
-                          </div>
-                      {% endfor %}
-                  </div>
-              </div>
-          {% endif %}
-      </div>
+    <div class="container" style="display:flex;justify-content:space-between;, ">{% block btns %}{% endblock %}</div>
 
-        <div class="container" style="display:flex;justify-content:space-between;, ">{% block btns %}{% endblock %}</div>
+    <main class="container-fluid py-5 text-center">
+        {% block main %}{% endblock %}
+    </main>
 
-        <main class="container-fluid py-5 text-center">
-            {% block main %}{% endblock %}
-        </main>
-
-    </body>
+</body>
 
 </html>
