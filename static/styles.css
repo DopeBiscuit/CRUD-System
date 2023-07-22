@@ -24,6 +24,11 @@ body {
     }
 }
 
+.table {
+
+    --bs-table-striped-color: red;
+}
+
 .c-primary-button{
     display: flex;
     justify-content: center;

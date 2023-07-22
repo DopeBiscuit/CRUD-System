@@ -35,8 +35,8 @@
 
 
 
-    <table class="table table-striped thead-dark table-hover    ">
-        <thead id="thh" style="background-color: #0072c6; color: white; border: 1px white;">
+    <table class="table table-bordered table-secondary table-striped border-grey table-hover my-custom-table">
+        <thead id="thh" class="table-active table-dark">
 
         </thead>
         <tbody id="tbb">
@@ -60,11 +60,20 @@
             body.appendChild(tmp);
         {% endfor %}
 
-
-        {% for i in range(1,row_len) %}
+            tmprow = document.createElement('tr');
+            tmprow.setAttribute("class", "table-active");
+            {% for i in range(1,row_len) %}
             tmp = document.createElement('th');
+            tmp.setAttribute("style","color: white; font-weight: bold; font-size: large;");
+            tmp.setAttribute("class","table-active");
             tmp.innerHTML = "{{ keys[i] }}";
-            thead.appendChild(tmp);
+            tmprow.appendChild(tmp);
+        {% endfor %}
+        {% for _ in range(2)%}
+            tmp = document.createElement('th');
+            tmp.innerHTML = " ";
+            tmprow.appendChild(tmp);
+            thead.appendChild(tmprow);
         {% endfor %}
 
 
@@ -94,10 +103,10 @@
 
             tmp_td = document.createElement('td');
             btn_value = "{{ data[j][keys[0]] }} {{ table }}";
-            tmp_td.innerHTML = '<button type="submit" name="delbtn" value="' + btn_value + '" class="btn btn-primary" form="delrow">Delete</button>';
+            tmp_td.innerHTML = '<button type="submit" name="delbtn" value="' + btn_value + '" class="btn btn-primary btn-danger w-100 mx-auto" form="delrow">Delete</button>';
             tmp_tr.appendChild(tmp_td);
             tmp_td = document.createElement('td');
-            tmp_td.innerHTML = '<button type="submit" name="editbtn" value="' + btn_value + '" class="btn btn-primary" form="' + form_id + '">Edit</button>';
+            tmp_td.innerHTML = '<button type="submit" name="editbtn" value="' + btn_value + '" class="btn btn-primary c-primary-button w-100 mx-auto" form="' + form_id + '">Edit</button>';
             tmp_tr.appendChild(tmp_td);
             console.log(tmp_tr);
 
@@ -127,7 +136,7 @@
             {% endfor %}
             tmp_td = document.createElement('td');
             tmp_td.setAttribute('colspan', '2')
-            tmp_td.innerHTML = '<button type="submit" name="addbtn" value="{{ table }}" class="btn btn-primary" form="addrow">Add</button>';
+            tmp_td.innerHTML = '<button type="submit" name="addbtn" value="{{ table }}" class="btn btn-primary btn-success w-50 mx-auto" form="addrow">Add</button>';
             tmp_tr.appendChild(tmp_td);
             tbody.appendChild(tmp_tr);
         {% endif %}
@@ -142,6 +151,10 @@
         console.log(tr);
         tr.parentNode.removeChild(tr);
     }
+
+    {% if data_len > 1 %}
+        window.scrollTo(0, document.body.scrollHeight);
+    {% endif %}
 </script>
 
 {% endblock %}
