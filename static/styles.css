@@ -24,9 +24,12 @@ body {
     }
 }
 
-.table {
+.table-active{
+    --bs-table-bg-state: #8c8c8c;
+}
 
-    --bs-table-striped-color: red;
+th {
+    border: none;
 }
 
 .c-primary-button{

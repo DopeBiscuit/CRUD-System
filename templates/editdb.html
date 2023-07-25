@@ -34,15 +34,16 @@
 <form action="/addrow" method="post" id="addrow"></form>
 
 
-
-    <table class="table table-bordered table-secondary table-striped border-grey table-hover my-custom-table">
-        <thead id="thh" class="table-active table-dark">
+    {% if row_len %}
+    <table class="table shadow mx-auto table-bordered table-secondary table-hover" style="width: 80%;">
+        <thead id="thh">
 
         </thead>
         <tbody id="tbb">
 
         </tbody>
     </table>
+    {% endif %}
 
 <script>
     window.onload = main();
@@ -69,12 +70,12 @@
             tmp.innerHTML = "{{ keys[i] }}";
             tmprow.appendChild(tmp);
         {% endfor %}
-        {% for _ in range(2)%}
             tmp = document.createElement('th');
-            tmp.innerHTML = " ";
+            tmp.innerHTML = "Actions";
+            tmp.setAttribute("colspan", "2");
+            tmp.setAttribute("style","color: white; font-weight: bold; font-size: large;");
             tmprow.appendChild(tmp);
             thead.appendChild(tmprow);
-        {% endfor %}
 
 
         console.log(thead)
