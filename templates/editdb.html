@@ -28,13 +28,13 @@
     </div>
 </div>
 
-<hr style="border-top: 5px solid #033457; border-radius: 3px;" class="mb-5">
 
 <form action="/delrow" method="post" id="delrow"></form>
 <form action="/addrow" method="post" id="addrow"></form>
 
 
-    {% if row_len %}
+{% if row_len %}
+    <hr style="border-top: 5px solid #033457; border-radius: 3px;" class="mb-5">
     <table class="table shadow mx-auto table-bordered table-secondary table-hover" style="width: 80%;">
         <thead id="thh">
 
@@ -61,21 +61,23 @@
             body.appendChild(tmp);
         {% endfor %}
 
-            tmprow = document.createElement('tr');
-            tmprow.setAttribute("class", "table-active");
-            {% for i in range(1,row_len) %}
+        tmprow = document.createElement('tr');
+        tmprow.setAttribute("class", "table-active");
+       
+        {% for i in range(1,row_len) %}
             tmp = document.createElement('th');
             tmp.setAttribute("style","color: white; font-weight: bold; font-size: large;");
             tmp.setAttribute("class","table-active");
-            tmp.innerHTML = "{{ keys[i] }}";
+            tmp.innerHTML = "{{ ckeys[i] }}";
             tmprow.appendChild(tmp);
         {% endfor %}
-            tmp = document.createElement('th');
-            tmp.innerHTML = "Actions";
-            tmp.setAttribute("colspan", "2");
-            tmp.setAttribute("style","color: white; font-weight: bold; font-size: large;");
-            tmprow.appendChild(tmp);
-            thead.appendChild(tmprow);
+
+        tmp = document.createElement('th');
+        tmp.innerHTML = "Actions";
+        tmp.setAttribute("colspan", "2");
+        tmp.setAttribute("style","color: white; font-weight: bold; font-size: large;");
+        tmprow.appendChild(tmp);
+        thead.appendChild(tmprow);
 
 
         console.log(thead)

@@ -115,9 +115,12 @@ def editdb():
         data = udb.execute("SELECT * FROM ?", table)
         dtypes = udb.execute("SELECT type from pragma_table_info(?) as tblInfo;", table)
         keys = list(data[0].keys())
+        ckeys = []
+        for i in range(len(keys)):
+            ckeys.append(keys[i].strip("_").replace("_", " "))
         row_len = len(keys)
         data_len = len(data)
-        return render_template("editdb.html", data=data, keys=keys, row_len=row_len, data_len=data_len, table=table, tbnames=tbnames, dtypes=dtypes)
+        return render_template("editdb.html", data=data, ckeys=ckeys, keys=keys, row_len=row_len, data_len=data_len, table=table, tbnames=tbnames, dtypes=dtypes)
     else:
         tbnames = udb.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_sequence' ORDER BY name")
         data = []
@@ -130,23 +133,24 @@ def editdb():
 @app.route("/createtb", methods=["GET", "POST"])
 @login_required
 def createtb():
-    user_dbs =  db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
+    datatypes = ["TEXT", "INTEGER", "REAL", "NUMERIC", "BLOB"]
+    clm_names = []
     """Makes a new table for a user."""
     # Check for request method.
     if request.method == "POST":
         # Ensure user gave a table name.
         if not request.form.get("tbname"):
-            return render_template("createtb.html", messages=[Message(type="danger", message="Must provide a table name.")])
+            return render_template("createtb.html", datatypes=datatypes, messages=[Message(type="danger", message="Must provide a table name.")])
 
         # Ensure first letter is alphabetic
         tbname = request.form.get("tbname").lower().replace(' ', '_')
         if not tbname[0].isalpha():
-            return render_template("createtb.html", messages=[Message(type="danger", message="First character of the table name must be an alphabetic character.")])
+            return render_template("createtb.html", datatypes=datatypes, messages=[Message(type="danger", message="First character of the table name must be an alphabetic character.")])
 
         # Get table name and check availability.
         tbnames = udb.execute("SELECT name FROM sqlite_master WHERE type='table' AND name = ? ORDER BY name", tbname)
         if tbnames:
-            return render_template("createtb.html", messages=[Message(type="danger", message="Table name already in use.")])
+            return render_template("createtb.html", datatypes=datatypes, messages=[Message(type="danger", message="Table name already in use.")])
 
         # Loop through user's input to make table
         clm_num = int(request.form.get("num-clm"))
@@ -168,6 +172,13 @@ def createtb():
             if not data_type:
                 data_type = 'TEXT'
 
+            # Remove spaces from column names
+            clm_name = clm_name.replace(" ", "_")
+            if clm_name in clm_names:
+                clm_name = clm_name + "_"
+                clm_names.append(clm_name)
+            else:    
+                clm_names.append(clm_name)
             # If first ittiration, then don't add comma to the start, if not then add, and then add column name followed by space and datatype.
             if i == 0:
                 table_command = table_command + clm_name + " " + data_type
@@ -193,7 +204,6 @@ def createtb():
 
         return redirect("/editdb")
     else:
-        datatypes = ["TEXT", "INTEGER", "REAL", "NUMERIC", "BLOB"]
         return render_template("createtb.html", datatypes=datatypes)
 
 @app.route("/delrow", methods=["POST"])
@@ -214,9 +224,12 @@ def delrow():
     tbnames = udb.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_sequence' ORDER BY name")
     dtypes = udb.execute("SELECT type from pragma_table_info(?) as tblInfo;", name)
     keys = list(data[0].keys())
+    ckeys = []
+    for i in range(len(keys)):
+            ckeys.append(keys[i].strip("_").replace("_", " "))
     row_len = len(keys)
     data_len = len(data)
-    return render_template("editdb.html", data=data, keys=keys, row_len=row_len, data_len=data_len, table=name, tbnames=tbnames, dtypes=dtypes)
+    return render_template("editdb.html", data=data, ckeys=ckeys, keys=keys, row_len=row_len, data_len=data_len, table=name, tbnames=tbnames, dtypes=dtypes)
 
 
 
@@ -224,7 +237,6 @@ def delrow():
 @app.route("/editrow", methods=["POST"])
 @login_required
 def editrow():
-    user_dbs =  db.execute("SELECT dbname FROM ref WHERE id = ? ORDER BY dbname", session["user_id"])
     # Get values of rows to be editited
     btn_val = request.form.get("editbtn").split()
     ID = btn_val[0]
@@ -252,9 +264,12 @@ def editrow():
     tbnames = udb.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_sequence' ORDER BY name")
     dtypes = udb.execute("SELECT type from pragma_table_info(?) as tblInfo;", tbname)
     keys = list(data[0].keys())
+    ckeys = []
+    for i in range(len(keys)):
+            ckeys.append(keys[i].strip("_").replace("_", " "))
     row_len = len(keys)
     data_len = len(data)
-    return render_template("editdb.html", data=data, keys=keys, row_len=row_len, data_len=data_len, table=tbname, tbnames=tbnames, dtypes=dtypes)
+    return render_template("editdb.html", data=data, ckeys=ckeys, keys=keys, row_len=row_len, data_len=data_len, table=tbname, tbnames=tbnames, dtypes=dtypes)
 
 
 @app.route("/addrow", methods=["POST"])
@@ -290,9 +305,12 @@ def addrow():
     tbnames = udb.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_sequence' ORDER BY name")
     dtypes = udb.execute("SELECT type from pragma_table_info(?) as tblInfo;", tbname)
     keys = list(data[0].keys())
+    ckeys = []
+    for i in range(len(keys)):
+            ckeys.append(keys[i].strip("_").replace("_", " "))
     row_len = len(keys)
     data_len = len(data)
-    return render_template("editdb.html", data=data, keys=keys, row_len=row_len, data_len=data_len, table=tbname, tbnames=tbnames, dtypes=dtypes)
+    return render_template("editdb.html", data=data, ckeys=ckeys, keys=keys, row_len=row_len, data_len=data_len, table=tbname, tbnames=tbnames, dtypes=dtypes)
 
 
 @app.route("/deletetb", methods=["GET", "POST"])
