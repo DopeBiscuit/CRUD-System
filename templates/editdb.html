@@ -32,7 +32,6 @@
 <form action="/delrow" method="post" id="delrow"></form>
 <form action="/addrow" method="post" id="addrow"></form>
 
-
 {% if row_len %}
     <hr style="border-top: 5px solid #033457; border-radius: 3px;" class="mb-5">
     <table class="table shadow mx-auto table-bordered table-secondary table-hover" style="width: 80%;">
@@ -46,6 +45,10 @@
     {% endif %}
 
 <script>
+    edit_icon = '<svg xmlns="http://www.w3.org/2000/svg" class="mx-auto my-auto" width="20" height="20" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16"> <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/></svg>'
+    add_icon = '<svg xmlns="http://www.w3.org/2000/svg" class="mx-auto my-auto" width="20" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/></svg>'
+    delete_icon = '<svg xmlns="http://www.w3.org/2000/svg" class="mx-auto my-auto" width="20" height="20" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16"><path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/></svg>'
+    
     window.onload = main();
     function main() {
         body = document.getElementsByTagName('body')[0];
@@ -106,10 +109,10 @@
 
             tmp_td = document.createElement('td');
             btn_value = "{{ data[j][keys[0]] }} {{ table }}";
-            tmp_td.innerHTML = '<button type="submit" name="delbtn" value="' + btn_value + '" class="btn btn-primary btn-danger w-100 mx-auto" form="delrow">Delete</button>';
+            tmp_td.innerHTML = '<button type="submit" name="delbtn" value="' + btn_value + `" class="btn btn-primary btn-danger w-100 mx-auto" form="delrow">${delete_icon}</button> `;
             tmp_tr.appendChild(tmp_td);
             tmp_td = document.createElement('td');
-            tmp_td.innerHTML = '<button type="submit" name="editbtn" value="' + btn_value + '" class="btn btn-primary c-primary-button w-100 mx-auto" form="' + form_id + '">Edit</button>';
+            tmp_td.innerHTML = '<button type="submit" name="editbtn" value="' + btn_value + '" class="btn btn-primary c-primary-button w-100 mx-auto" form="' + form_id + `">${edit_icon}</button> `;
             tmp_tr.appendChild(tmp_td);
             console.log(tmp_tr);
 
@@ -139,7 +142,7 @@
             {% endfor %}
             tmp_td = document.createElement('td');
             tmp_td.setAttribute('colspan', '2')
-            tmp_td.innerHTML = '<button type="submit" name="addbtn" value="{{ table }}" class="btn btn-primary btn-success w-50 mx-auto" form="addrow">Add</button>';
+            tmp_td.innerHTML = `<button type="submit" name="addbtn" value="{{ table }}" class="btn btn-primary btn-success w-50 mx-auto" form="addrow">${add_icon}</button>`;
             tmp_tr.appendChild(tmp_td);
             tbody.appendChild(tmp_tr);
         {% endif %}
