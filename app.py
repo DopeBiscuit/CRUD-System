@@ -117,7 +117,7 @@ def editdb():
         keys = list(data[0].keys())
         ckeys = []
         for i in range(len(keys)):
-            ckeys.append(keys[i].strip("_").replace("_", " "))
+            ckeys.append(keys[i].strip("_").replace("_", " ").title())
         row_len = len(keys)
         data_len = len(data)
         return render_template("editdb.html", data=data, ckeys=ckeys, keys=keys, row_len=row_len, data_len=data_len, table=table, tbnames=tbnames, dtypes=dtypes)
@@ -226,7 +226,7 @@ def delrow():
     keys = list(data[0].keys())
     ckeys = []
     for i in range(len(keys)):
-            ckeys.append(keys[i].strip("_").replace("_", " "))
+            ckeys.append(keys[i].strip("_").replace("_", " ").title())
     row_len = len(keys)
     data_len = len(data)
     return render_template("editdb.html", data=data, ckeys=ckeys, keys=keys, row_len=row_len, data_len=data_len, table=name, tbnames=tbnames, dtypes=dtypes)
@@ -266,7 +266,7 @@ def editrow():
     keys = list(data[0].keys())
     ckeys = []
     for i in range(len(keys)):
-            ckeys.append(keys[i].strip("_").replace("_", " "))
+            ckeys.append(keys[i].strip("_").replace("_", " ").title())
     row_len = len(keys)
     data_len = len(data)
     return render_template("editdb.html", data=data, ckeys=ckeys, keys=keys, row_len=row_len, data_len=data_len, table=tbname, tbnames=tbnames, dtypes=dtypes)
@@ -307,7 +307,7 @@ def addrow():
     keys = list(data[0].keys())
     ckeys = []
     for i in range(len(keys)):
-            ckeys.append(keys[i].strip("_").replace("_", " "))
+            ckeys.append(keys[i].strip("_").replace("_", " ").title())
     row_len = len(keys)
     data_len = len(data)
     return render_template("editdb.html", data=data, ckeys=ckeys, keys=keys, row_len=row_len, data_len=data_len, table=tbname, tbnames=tbnames, dtypes=dtypes)
