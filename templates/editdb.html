@@ -10,8 +10,8 @@
     <form action="/editdb" method="post" style="display: flex; gap: 1rem;">
         <select name="tables" class="form-select mx-auto w-100" aria-label="Tables">
             <option disabled selected style="text-align:center">Table</option>
-            {% for tbname in tbnames %}
-            <option value="{{ tbname.name }}" style="text-align:center;">{{ tbname.name }}</option>
+            {% for i in range(ctbnames|length) %}
+            <option value="{{ tbnames[i].name }}" style="text-align:center;">{{ ctbnames[i] }}</option>
             {% endfor %}
         </select>
         <br>

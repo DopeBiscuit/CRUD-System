@@ -115,20 +115,26 @@ def editdb():
         data = udb.execute("SELECT * FROM ?", table)
         dtypes = udb.execute("SELECT type from pragma_table_info(?) as tblInfo;", table)
         keys = list(data[0].keys())
+        ctbnames = []
+        for i in range(len(tbnames)):
+            ctbnames.append(tbnames[i]['name'].replace("_", " ").title())
         ckeys = []
         for i in range(len(keys)):
             ckeys.append(keys[i].strip("_").replace("_", " ").title())
         row_len = len(keys)
         data_len = len(data)
-        return render_template("editdb.html", data=data, ckeys=ckeys, keys=keys, row_len=row_len, data_len=data_len, table=table, tbnames=tbnames, dtypes=dtypes)
+        return render_template("editdb.html", ctbnames=ctbnames, data=data, ckeys=ckeys, keys=keys, row_len=row_len, data_len=data_len, table=table, tbnames=tbnames, dtypes=dtypes)
     else:
         tbnames = udb.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_sequence' ORDER BY name")
+        ctbnames = []
+        for i in range(len(tbnames)):
+            ctbnames.append(tbnames[i]['name'].replace("_", " ").title())
         data = []
         keys = []
         dtypes = []
         row_len = len(keys)
         data_len = len(data)
-        return render_template("editdb.html", tbnames=tbnames, data=data, keys=keys, row_len=row_len, data_len=data_len, dtypes=dtypes)
+        return render_template("editdb.html", ctbnames=ctbnames, tbnames=tbnames, data=data, keys=keys, row_len=row_len, data_len=data_len, dtypes=dtypes)
 
 @app.route("/createtb", methods=["GET", "POST"])
 @login_required
@@ -222,6 +228,9 @@ def delrow():
     udb.execute("DELETE FROM ? WHERE secret_id = ?", name,ID)
     data = udb.execute("SELECT * FROM ?", name)
     tbnames = udb.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_sequence' ORDER BY name")
+    ctbnames = []
+    for i in range(len(tbnames)):
+        ctbnames.append(tbnames[i]['name'].replace("_", " ").title())
     dtypes = udb.execute("SELECT type from pragma_table_info(?) as tblInfo;", name)
     keys = list(data[0].keys())
     ckeys = []
@@ -229,7 +238,7 @@ def delrow():
             ckeys.append(keys[i].strip("_").replace("_", " ").title())
     row_len = len(keys)
     data_len = len(data)
-    return render_template("editdb.html", data=data, ckeys=ckeys, keys=keys, row_len=row_len, data_len=data_len, table=name, tbnames=tbnames, dtypes=dtypes)
+    return render_template("editdb.html", data=data, ctbnames=ctbnames, ckeys=ckeys, keys=keys, row_len=row_len, data_len=data_len, table=name, tbnames=tbnames, dtypes=dtypes)
 
 
 
@@ -262,6 +271,9 @@ def editrow():
     # Query all required data again to render editdb page.
     data = udb.execute("SELECT * FROM ?", tbname)
     tbnames = udb.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_sequence' ORDER BY name")
+    ctbnames = []
+    for i in range(len(tbnames)):
+        ctbnames.append(tbnames[i]['name'].replace("_", " ").title())
     dtypes = udb.execute("SELECT type from pragma_table_info(?) as tblInfo;", tbname)
     keys = list(data[0].keys())
     ckeys = []
@@ -269,7 +281,7 @@ def editrow():
             ckeys.append(keys[i].strip("_").replace("_", " ").title())
     row_len = len(keys)
     data_len = len(data)
-    return render_template("editdb.html", data=data, ckeys=ckeys, keys=keys, row_len=row_len, data_len=data_len, table=tbname, tbnames=tbnames, dtypes=dtypes)
+    return render_template("editdb.html", data=data, ctbnames=ctbnames, ckeys=ckeys, keys=keys, row_len=row_len, data_len=data_len, table=tbname, tbnames=tbnames, dtypes=dtypes)
 
 
 @app.route("/addrow", methods=["POST"])
@@ -303,6 +315,9 @@ def addrow():
     # Query required data to re render the editdb page.
     data = udb.execute("SELECT * FROM ?", tbname)
     tbnames = udb.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_sequence' ORDER BY name")
+    ctbnames = []
+    for i in range(len(tbnames)):
+        ctbnames.append(tbnames[i]['name'].replace("_", " ").title())
     dtypes = udb.execute("SELECT type from pragma_table_info(?) as tblInfo;", tbname)
     keys = list(data[0].keys())
     ckeys = []
@@ -310,7 +325,7 @@ def addrow():
             ckeys.append(keys[i].strip("_").replace("_", " ").title())
     row_len = len(keys)
     data_len = len(data)
-    return render_template("editdb.html", data=data, ckeys=ckeys, keys=keys, row_len=row_len, data_len=data_len, table=tbname, tbnames=tbnames, dtypes=dtypes)
+    return render_template("editdb.html", data=data, ctbnames=ctbnames, ckeys=ckeys, keys=keys, row_len=row_len, data_len=data_len, table=tbname, tbnames=tbnames, dtypes=dtypes)
 
 
 @app.route("/deletetb", methods=["GET", "POST"])
@@ -328,7 +343,10 @@ def deletetb():
         return redirect("/editdb")
     else:
         tbnames = udb.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_sequence' ORDER BY name")
-        return render_template("deletetb.html", tbnames=tbnames)
+        ctbnames = []
+        for i in range(len(tbnames)):
+            ctbnames.append(tbnames[i]['name'].replace("_", " ").title())
+        return render_template("deletetb.html", tbnames=tbnames, ctbnames=ctbnames)
 
 
 @app.route("/deletedb", methods=["GET", "POST"])

@@ -9,8 +9,8 @@
     <form action="/deletetb" method="post">
         <select name="tables" class="form-select form-select-lg mx-auto w-100" style="text-align: center; ">
             <option disabled selected>Table</option>
-            {% for tbname in tbnames %}
-            <option value="{{ tbname.name }}">{{ tbname.name }}</option>
+            {% for i in range(ctbnames|length) %}
+            <option value="{{ tbnames[i].name }}">{{ ctbnames[i] }}</option>
             {% endfor %}
         </select>
         <br>
