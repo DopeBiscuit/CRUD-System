@@ -443,6 +443,9 @@ def register():
             return render_template("register.html", messages=[Message(type="danger", message="Password and password confirmation must match.")])
         password = request.form.get("password")
 
+        if len(password) < 8:
+            return render_template("register.html", messages=[Message(type="danger", message="Password must be at least 8 characters.")])
+
         # Query database for usernames to make sure it is unique.
         usernames = db.execute("SELECT username FROM users WHERE username = ? ", username)
 

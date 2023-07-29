@@ -11,11 +11,11 @@ Log In
     <form action="/login" method="post">
         <div class="row p-1">
             <input autocomplete="off" autofocus class="form-control mx-auto"
-                id="username" name="username" placeholder="Username" type="text">
+                id="username" name="username" placeholder="Username" type="text" required>
         </div>
         <div class="row p-1">
             <input class="form-control mx-auto" id="password" name="password"
-                placeholder="Password" type="password">
+                placeholder="Password" type="password" required>
         </div>
         <button class="btn btn-primary c-primary-button mb-4 mt-4 mx-auto w-100 fw-bold" type="submit">Log In</button>
         <p>Don't have an account? <a href="/register">Register</a></p>
