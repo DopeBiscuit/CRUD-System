@@ -130,5 +130,7 @@ If the user clicks the <b>Create Table</b> button they will be redirected to the
 ---
 
 #### **Special thanks to the following contributors for their help with ui adjustments and bug fixing:**
-M7MD <mohamed040406@users.noreply.github.com>
-Omar Attia <OmarMAttia7@users.noreply.github.com>
+<div>
+M7MD <mohamed040406@users.noreply.github.com><br>
+Omar Attia <OmarMAttia7@users.noreply.github.com> 
+</div>
