@@ -12,14 +12,14 @@ where in each database the user could have a number of tables to their desire, w
 ### **Upcoming explanation is provided in the video linked above.**
 
 ---
-![[Pasted image 20230729150634.png]]
+<img src="/Images/Log in.png"><br>
 **First** of all the user is prompted with the log in page, the user has to enter the credentials of their account if one does exist, incorrect credentials will prompt the user with an alert explaining what criterion was not met.
 
 **If** the user doesn't already have an account they will need to register an account, to access the register page the user just simply clicks on the **Register** Link below the **Log In** button.
 
 ---
 
-![[Pasted image 20230729150601.png]]
+<img src="/Images/Register.png"><br>
 
 **Register** page is then rendered for the user, the user now has to input all of the required fields to create a valid account, there are certain criteria that must be met, failing to meet any of them will result in an alert explaining what criterion wasn't met.
 
@@ -29,19 +29,19 @@ Criteria:
 - Password is at least 8 characters long
 - Password and the confirmation match
 
-![[Pasted image 20230729150643.png]]
+<img src="/Images/HomePage.png"><br>
 **After** the user successfully logs in or register an account, they are redirected to the homepage, the homepage is where all the databases of user are available, and where the user can create or delete databases, the page consists of small form, the select menu automatically populates with all the available databases of the user, to access the database click on it from the select menu and hit the select button. 
 
 **For** a fresh account there will be no databases, therefore no options to select from in the select menu, to create a database hit the green create button, if a user wants to delete an existing database simply hit the red delete button.
 
 ---
-![[Pasted image 20230729150651.png]]
+<img src="/Images/CreateDB.png"><br>
 **The** user will then proceed to insert the desired name and press create, the user must enter a name or they will be prompted with an alert, the database name must be different from already existing databases for the user.
 
 **If** the user decides not to create a database and wants to back to the homepage, simply click on the home button in the **Navbar** in the top left corner.
 
 ---
-![[Pasted image 20230729150656.png]]
+<img src="/Images/DeleteDB.png"><br>
 <div style="text-align: justify; text-justify: inter-word;">
 <b>If</b> a user does prefer to delete a database, after clicking the red delete button from the homepage, the user will be redirected to the delete page for extra caution, the user now will select the database they want to erase from the select menu then hit delete database, the user will then be redirected to the homepage. 
 </div>
@@ -51,11 +51,11 @@ Criteria:
 **If** the user decides not to create a database and wants to back to the homepage, simply click on the home button in the **Navbar** in the top left corner.
 
 ---
-![[Pasted image 20230729150700.png]]
+<img src="/Images/EditDB.png"><br>
  After the user selects a database from the homepage they will be redirected to the edit database page, this is where the data handling will happen, the user can select in similar fashion a table from the selected database to edit, the user can also delete an existing table, or create a new table.
 
 ---
-![[Pasted image 20230729150711.png]]
+<img src="/Images/CreateTB.png"><br>
 <div style="text-align: justify; text-justify: inter-word;">
 If the user clicks the <b>Create Table</b> button they will be redirected to the table creation page, the page will include a simple form requiring the name and the number of columns of the table.
 <br><br>
@@ -68,7 +68,7 @@ If the user clicks the <b>Create Table</b> button they will be redirected to the
 <b>The</b> user will begin filling the columns' info, <b>Column name must not start with a number</b>, and if no exact datatype is selected then the datatype will be defaulted to text.
 </div>
 ---
-![[Pasted image 20230730011432.png]]
+<img src="/Images/DeleteTB.png"><br>
 <div style="text-align: justify; text-justify: inter-word;">
 <b>If</b> the user clicked on the <b>Delete Table</b> button they will be redirected to the delete table page, the user will proceed to select the table they want to delete from the select menu and hit Delete.
 <br><br>
@@ -77,7 +77,7 @@ If the user clicks the <b>Create Table</b> button they will be redirected to the
 <b>After</b> hitting Delete the user is redirected to the edit database page again.
 </div>
 ---
-![[Pasted image 20230729150723.png]]
+<img src="/Images/table.png"><br>
 <div style="text-align: justify; text-justify: inter-word;">
 <b>In</b> the edit database page, you can select the table you want to edit, after clicking the  <b>Select</b> button the table is automatically loaded into the page, all freshly created tables will have an empty first row.
 <br><br>
@@ -93,7 +93,7 @@ If the user clicks the <b>Create Table</b> button they will be redirected to the
 
 </div>
 ---
-![[Pasted image 20230729150730.png]]
+<img src="/Images/DatabaseMenu.png"><br>
 <div style="text-align: justify; text-justify: inter-word;">
 <b>If</b> the user wants to select another database to edit it, they can click the home button in the top left of the <b>Navigation Bar</b> to go to the homepage, or they could use the database menu also found in the <b>Navigation Bar</b> in the top left of the screen, where all databases for the current user are displayed, click the desired database to activate and start editing it.
 </div>
