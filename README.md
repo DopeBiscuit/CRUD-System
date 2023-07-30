@@ -109,7 +109,7 @@ If the user clicks the <b>Create Table</b> button they will be redirected to the
 
 **And this is basically it, the tabular data management system, the user can create an account, make their own databases, delete them, or edit them, with in each database the user can create their tables and edit them or delete them if they want.**
 
-### So what do the files in the final project include:
+### File Structure:
 - **app.py**, basically the main file, where all the logic is applied, deals with all GET and POST requests, including all the redirects and functions
 - **helpers.py**, used for the require log in functionality.
 - **main.db** this is the main database where it includes 2 tables, the users table that stores the user's unique autoincrementing ID, username and hash of their password, and also include the ref table, which includes the ID's of the users and their respective databases.
