@@ -24,7 +24,7 @@ where in each database the user could have a number of tables to their desire, w
 **Register** page is then rendered for the user, the user now has to input all of the required fields to create a valid account, there are certain criteria that must be met, failing to meet any of them will result in an alert explaining what criterion wasn't met.
 
 Criteria:
-* All data fields are populated
+- All data fields are populated
 - Uniqueness of Username
 - Password is at least 8 characters long
 - Password and the confirmation match
@@ -130,7 +130,6 @@ If the user clicks the <b>Create Table</b> button they will be redirected to the
 ---
 
 #### **Special thanks to the following contributors for their help with ui adjustments and bug fixing:**
-<div>
-M7MD <mohamed040406@users.noreply.github.com><br>
-Omar Attia <OmarMAttia7@users.noreply.github.com> 
-</div>
+- M7MD <mohamed040406@users.noreply.github.com>
+- Omar Attia <OmarMAttia7@users.noreply.github.com> 
+
