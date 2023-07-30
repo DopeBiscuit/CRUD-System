@@ -67,6 +67,7 @@ If the user clicks the <b>Create Table</b> button they will be redirected to the
 <br><br>
 <b>The</b> user will begin filling the columns' info, <b>Column name must not start with a number</b>, and if no exact datatype is selected then the datatype will be defaulted to text.
 </div>
+
 ---
 <img src="/Images/DeleteTB.png"><br>
 <div style="text-align: justify; text-justify: inter-word;">
@@ -76,6 +77,7 @@ If the user clicks the <b>Create Table</b> button they will be redirected to the
 <br><br>
 <b>After</b> hitting Delete the user is redirected to the edit database page again.
 </div>
+
 ---
 <img src="/Images/table.png"><br>
 <div style="text-align: justify; text-justify: inter-word;">
@@ -92,11 +94,13 @@ If the user clicks the <b>Create Table</b> button they will be redirected to the
 <b><i>Clicking the Select button without choosing a table will result in unloading the current active table.</i></b>
 
 </div>
+
 ---
 <img src="/Images/DatabaseMenu.png"><br>
 <div style="text-align: justify; text-justify: inter-word;">
 <b>If</b> the user wants to select another database to edit it, they can click the home button in the top left of the <b>Navigation Bar</b> to go to the homepage, or they could use the database menu also found in the <b>Navigation Bar</b> in the top left of the screen, where all databases for the current user are displayed, click the desired database to activate and start editing it.
 </div>
+
 ---
 
 **The user can click the Log out in the top right of the screen to log out of the current account.**
@@ -107,7 +111,7 @@ If the user clicks the <b>Create Table</b> button they will be redirected to the
 
 ### So what do the files in the final project include:
 - **app.py**, basically the main file, where all the logic is applied, deals with all GET and POST requests, including all the redirects and functions
-- **helpers.py**, this is an edited file from the cs50 finanace problem set, used to for the apology functionality and the require log in functionality.
+- **helpers.py**, used for the require log in functionality.
 - **main.db** this is the main database where it includes 2 tables, the users table that stores the user's unique autoincrementing ID, username and hash of their password, and also include the ref table, which includes the ID's of the users and their respective databases.
 
 - **static folder**, it includes the css file that is the same file from the cs50 finance problem set for the nav bar css
@@ -116,9 +120,15 @@ If the user clicks the <b>Create Table</b> button they will be redirected to the
 - **apology.html**, contains the apology that appears in case of errors.
 - **createdb.html and createtb.html**, includes the html for the creation pages, where the createtb uses javascripts to change the html of the page to load the required amount of input field pairs.
 
-- **index.html**, html of the main pagae where the user selects the database required to navigate
+- **index.html**, html of the main page where the user selects the database required to navigate.
 - **deletedb.html and deletetb.html**, include the html for the deletion pages, uses jinja and javascript to auto populate the select fields with the available tables or databases.
 
 - **login.html and register.html**, include the html for the the log in and register page
 
 - **editdb.html**, includes html of the page where the user will select a table to edit, where the page uses jinja and html to display the tables in the select field and also to change the page's html to view the table once selected by the user and edit the table's content
+
+---
+
+#### **Special thanks to the following contributors for their help with ui adjustments and bug fixing:**
+M7MD <mohamed040406@users.noreply.github.com>
+Omar Attia <OmarMAttia7@users.noreply.github.com>
